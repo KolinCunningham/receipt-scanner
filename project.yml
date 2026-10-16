@@ -1,0 +1,94 @@
+name: ReceiptScanner
+options:
+  bundleIdPrefix: com.kolincunningham
+  deploymentTarget:
+    iOS: "26.0"
+    macOS: "26.0"
+  createIntermediateGroups: true
+settings:
+  base:
+    DEVELOPMENT_TEAM: ${DEVELOPMENT_TEAM} # from the environment, e.g. tools/local.env
+    SWIFT_VERSION: "5.0"
+    MARKETING_VERSION: "1.2"
+    CURRENT_PROJECT_VERSION: "12"
+    CODE_SIGN_STYLE: Automatic
+    # iCloud is off because the free Personal Team cannot use it. To turn it on with a paid
+    # Developer Program team: set DEVELOPMENT_TEAM, add SWIFT_ACTIVE_COMPILATION_CONDITIONS "$(inherited) ICLOUD", and the iCloud
+    # entitlements and Info.plist keys listed in README.md to both targets.
+targets:
+  ReceiptScanner:
+    type: application
+    platform: iOS
+    sources:
+      - ReceiptScanner
+      - Shared
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.kolincunningham.ReceiptScanner
+        PRODUCT_NAME: ReceiptScanner
+        TARGETED_DEVICE_FAMILY: "1"
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+    info:
+      path: ReceiptScanner/Info.plist
+      properties:
+        CFBundleDisplayName: Receipts
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        UILaunchScreen: {}
+        UISupportedInterfaceOrientations: [UIInterfaceOrientationPortrait]
+        NSCameraUsageDescription: Receipts uses the camera to scan your paper receipts.
+        NSPhotoLibraryUsageDescription: Receipts looks through your photos to find pictures of receipts. It only reads them and never changes, adds or deletes photos.
+        UIFileSharingEnabled: true
+        LSSupportsOpeningDocumentsInPlace: true
+  Ledger:
+    type: application
+    platform: iOS
+    sources:
+      - Ledger
+      - Shared
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.kolincunningham.Ledger
+        PRODUCT_NAME: Ledger
+        TARGETED_DEVICE_FAMILY: "1"
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+    info:
+      path: Ledger/Info.plist
+      properties:
+        CFBundleDisplayName: Ledger
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        UILaunchScreen: {}
+        UISupportedInterfaceOrientations: [UIInterfaceOrientationPortrait]
+        UIFileSharingEnabled: true
+        LSSupportsOpeningDocumentsInPlace: true
+  ReceiptsMac:
+    type: application
+    platform: macOS
+    sources:
+      - ReceiptsMac
+      - Shared
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.kolincunningham.ReceiptScanner.mac
+        PRODUCT_NAME: Receipts
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+        ENABLE_HARDENED_RUNTIME: YES
+    info:
+      path: ReceiptsMac/Info.plist
+      properties:
+        CFBundleDisplayName: Receipts & Ledger
+        CFBundleName: Receipts & Ledger
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        LSApplicationCategoryType: public.app-category.finance
+    entitlements:
+      path: ReceiptsMac/ReceiptsMac.entitlements
+      properties:
+        com.apple.security.app-sandbox: true
+        com.apple.security.files.user-selected.read-write: true
+        com.apple.security.network.client: true
+        com.apple.security.files.bookmarks.app-scope: true
